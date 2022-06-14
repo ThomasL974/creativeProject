@@ -7,7 +7,7 @@ export class Building {
     }
 
     init({scene, height, zPosition, color}) {
-        this.randomPositionX = Math.random() * 100 - 50;
+        this.randomPositionX = Math.random() * 500 - 250;
 
         this.randomHeight = height ? height : Math.random() * 20 + 10;
 

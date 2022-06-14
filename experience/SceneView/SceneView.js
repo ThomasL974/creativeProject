@@ -13,7 +13,7 @@ export default class SceneView extends SceneBase {
         super.init();
 
         // HELPERS
-        // this.setControls();
+        this.setControls();
         this.setHelpers();
 
         this.setup();
@@ -61,7 +61,7 @@ export default class SceneView extends SceneBase {
             color: 0x4D4D4D
         }
         // Adding of the building
-        const BUILDING_NUMBER = 20;
+        const BUILDING_NUMBER = 30;
         for (let i = 0; i < BUILDING_NUMBER; i++) {
             this.building = [{ ...new Building(this.buildingObj) }];
         }

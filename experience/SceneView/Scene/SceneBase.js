@@ -46,7 +46,7 @@ export default class SceneBase {
 
         const params = {
             exposure: 1,
-            bloomStrength: 2.5,
+            bloomStrength: 1,
             bloomThreshold: 0,
             bloomRadius: 0.5
         };

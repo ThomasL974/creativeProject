@@ -39,7 +39,7 @@ export default class SceneView extends SceneBase {
         texture.repeat.set(250, 250)
         const terrain = new Mesh(terrainGeometry, new MeshBasicMaterial({ color: texture }));
         terrain.position.set(0, 0, 0)
-        this.scene.add(terrain);
+        // this.scene.add(terrain);
 
         this.initBuilding();
         this.initNeonBuilding();

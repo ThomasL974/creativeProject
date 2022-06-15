@@ -60,7 +60,7 @@ export default class SceneBase {
 
         this.composer = new EffectComposer(this.renderer);
         this.composer.addPass(this.renderScene);
-        // this.composer.addPass(this.bloomPass);
+        this.composer.addPass(this.bloomPass);
 
         this.composer.setSize(this.width, this.height);
         this.render();

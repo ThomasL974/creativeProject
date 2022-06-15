@@ -13,13 +13,13 @@ export class Ship {
             console.log(gltf)
             gltf.scene.scale.set(0.05, 0.05, 0.05);
 
-            for (let i = 0; i < 4; i++) {
+            for (let i = 0; i < 10; i++) {
 
                 const newShip = gltf.scene.clone();
-                const randomX = Math.random() * 500;
+                const randomX = Math.random() * 1000 - 500;
                 const initialPosition = -1000;
                 newShip.position.set(randomX, 150, initialPosition);
-                newShip.rotateY(Math.PI / 80);
+                newShip.rotateY(Math.PI / 20);
 
                 this.ships.push({
                     mesh: newShip,
@@ -38,7 +38,7 @@ export class Ship {
             ship.mesh.position.z += ship.speed;
             if (ship.mesh.position.z > ship.distance) {
                 ship.mesh.position.z = ship.initialPosition;
-                ship.mesh.position.x = Math.random() * 500;
+                ship.mesh.position.x = Math.random() * 1000 - 500;
             }
         })
     }

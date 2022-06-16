@@ -2,10 +2,10 @@ import { Fog, Mesh, MeshBasicMaterial, PlaneGeometry, RepeatWrapping, TextureLoa
 import { Building } from './Building/Building';
 import SceneBase from './Scene/SceneBase';
 import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise.js';
-import {
-    GLTFLoader
-} from "three/examples/jsm/loaders/GLTFLoader.js";
 import { Ship } from './Ship/Ship';
+import { Cloud } from './Cloud/Cloud';
+import IntersectManager from './interactions/IntersectManager';
+import CameraManager from './camera/CameraManager';
 
 export default class SceneView extends SceneBase {
 
@@ -17,7 +17,7 @@ export default class SceneView extends SceneBase {
         super.init();
 
         // HELPERS
-        this.setControls();
+        // this.setControls();
         this.setHelpers();
         this.setup();
     }
@@ -33,7 +33,7 @@ export default class SceneView extends SceneBase {
             vertices[j + 1] = data[i] / 10;
 
         }
-        const texture = new TextureLoader().load('/public/assets/images/textures/road.jpg');
+        const texture = new TextureLoader().load('/assets/images/textures/road.jpg');
         texture.wrapS = RepeatWrapping;
         texture.wrapT = RepeatWrapping;
         texture.repeat.set(250, 250)
@@ -41,20 +41,25 @@ export default class SceneView extends SceneBase {
         terrain.position.set(0, 0, 0)
         // this.scene.add(terrain);
 
-        this.initBuilding();
+        console.log(this.initBuilding());
         this.initNeonBuilding();
-        
-        this.ship = new Ship(this.scene);
 
-        console.log(this.composer);
+        this.ship = new Ship(this.scene);
+        this.cloud = new Cloud(this.scene);
+
+        console.log(this.cloud);
 
         this.scene.fog = new Fog(0x000000, 200, 800) //0.005
 
+        this.intersect = new IntersectManager(this);
+
+        this.cameraManager = new CameraManager(this);
         this.isReady = true;
     }
 
     initBuilding() {
         // Adding of the building
+        this.building = [];
         const BUILDING_NUMBER = 500;
         for (let i = 0; i < BUILDING_NUMBER; i++) {
             this.buildingObj = {
@@ -62,11 +67,12 @@ export default class SceneView extends SceneBase {
                 zPosition: Math.random() * 1000 - 500,
                 neon: false,
             }
-            this.building = [{ ...new Building(this.buildingObj) }];
+            this.building.push(new Building(this.buildingObj));
         }
     }
 
     initNeonBuilding() {
+        this.buildingNeon = [];
         // Adding of the building
         const BUILDING_NUMBER = 500;
         for (let i = 0; i < BUILDING_NUMBER; i++) {
@@ -75,7 +81,8 @@ export default class SceneView extends SceneBase {
                 zPosition: Math.random() * 1000 - 500,
                 neon: true
             }
-            this.building = [{ ...new Building(this.buildingObj) }];
+            this.buildingNeon.push(new Building(this.buildingObj));
+            
         }
     }
 
@@ -104,8 +111,18 @@ export default class SceneView extends SceneBase {
     }
 
     update() {
-        if(this.ship){
+        if (this.ship) {
             this.ship.update()
         }
+
+        if (this.cloud) {
+            this.cloud.update()
+        }
+
+        if (this.intersect) {
+            this.intersect.update(this.buildingNeon)
+        }
+
+        this.cameraManager && this.cameraManager.update()
     }
 }

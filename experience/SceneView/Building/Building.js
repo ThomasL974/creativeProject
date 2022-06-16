@@ -3,14 +3,14 @@ import { lights } from '../../data/colors.data';
 
 export class Building {
 
-    constructor({ scene, height, zPosition, color = 0x6E6E6E, neon, }) {
-        this.init({ scene, height, zPosition, color, neon, })
+    constructor({ scene, height, zPosition, color = 0x6E6E6E, neon }) {
+        this.init({ scene, height, zPosition, color, neon })
     }
 
-    init({ scene, height, zPosition, color, neon, }) {
+    init({ scene, height, zPosition, color, neon }) {
         this.randomPositionX = Math.random() * 1000 - 500;
 
-        this.randomHeight = Math.random() * 80 + 10;
+        this.randomHeight = Math.random() * (150 - 10 + 1) + 10;
 
         this.zPosition = zPosition ? zPosition : -1
 

@@ -19,6 +19,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { Cloud } from '../cloud/Cloud';
 
 export default class SceneBase {
     composer;
@@ -60,7 +61,7 @@ export default class SceneBase {
 
         this.composer = new EffectComposer(this.renderer);
         this.composer.addPass(this.renderScene);
-        this.composer.addPass(this.bloomPass);
+        // this.composer.addPass(this.bloomPass);
 
         this.composer.setSize(this.width, this.height);
         this.render();

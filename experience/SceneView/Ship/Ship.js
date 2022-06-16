@@ -11,19 +11,19 @@ export class Ship {
         const loader = new GLTFLoader();
         loader.load("/public/assets/carShip/scene.gltf", (gltf) => {
             console.log(gltf)
-            gltf.scene.scale.set(0.05, 0.05, 0.05);
+            gltf.scene.scale.set(0.03, 0.03, 0.03);
 
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 4; i++) {
 
                 const newShip = gltf.scene.clone();
                 const randomX = Math.random() * 1000 - 500;
                 const initialPosition = -1000;
-                newShip.position.set(randomX, 150, initialPosition);
+                newShip.position.set(randomX, 100, initialPosition);
                 newShip.rotateY(Math.PI / 20);
 
                 this.ships.push({
                     mesh: newShip,
-                    speed: Math.random() * 2 + 2,
+                    speed: Math.random() * (5 - 2 + 1) + 2,
                     distance: 1000,
                     initialPosition: initialPosition
                 });

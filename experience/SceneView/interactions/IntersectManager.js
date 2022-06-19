@@ -3,13 +3,10 @@ import { Raycaster, Vector2 } from "three";
 export default class IntersectManager {
     constructor(sceneView) {
         this.sceneView = sceneView;
-        let container, stats;
 
         this.INTERSECTED;
-        let theta = 0;
 
         this.pointer = new Vector2();
-        const radius = 100;
 
         this.raycaster = new Raycaster();
 
@@ -24,7 +21,7 @@ export default class IntersectManager {
     }
 
     update(buildings) {
-
+        console.log("HEELO")
         const object3d = buildings.map(building => building.mesh)
         // find intersections
 
@@ -40,12 +37,10 @@ export default class IntersectManager {
 
                 this.INTERSECTED = intersects[0].object;
                 this.INTERSECTED.currentHex = this.INTERSECTED.material.emissive.getHex();
-                this.INTERSECTED.material.emissive.setHex(0xff0000);
+                this.INTERSECTED.material.emissive.setHex(0xFF0000);
 
             }
-
         } else {
-
             if (this.INTERSECTED) this.INTERSECTED.material.emissive.setHex(this.INTERSECTED.currentHex);
 
             this.INTERSECTED = null;

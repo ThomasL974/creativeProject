@@ -4,25 +4,24 @@ import {
     Color,
     GridHelper,
     HemisphereLight,
+    Layers,
     Mesh,
     MeshBasicMaterial,
     PerspectiveCamera,
     PointLight,
     ReinhardToneMapping,
     Scene,
+    ShaderMaterial,
     Vector2,
     Vector3,
     WebGLRenderer
 } from 'three';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-import { Cloud } from '../cloud/Cloud';
+import ComposerManager from '../ComposerManager/ComposerManager';
 
+const BLOOM_ACTIVATED = true;
 export default class SceneBase {
-    composer;
     constructor() {
         this.init();
     }
@@ -43,27 +42,7 @@ export default class SceneBase {
 
         // EVENTS
         this.bindEvents();
-
-
-        const params = {
-            exposure: 1,
-            bloomStrength: 1,
-            bloomThreshold: 0,
-            bloomRadius: 0.5
-        };
-
-        this.renderScene = new RenderPass(this.scene, this.camera);
-
-        this.bloomPass = new UnrealBloomPass(new Vector2(this.width, this.height), 1.5, 0.4, 0);
-        this.bloomPass.threshold = params.bloomThreshold;
-        this.bloomPass.strength = params.bloomStrength;
-        this.bloomPass.radius = params.bloomRadius;
-
-        this.composer = new EffectComposer(this.renderer);
-        this.composer.addPass(this.renderScene);
-        // this.composer.addPass(this.bloomPass);
-
-        this.composer.setSize(this.width, this.height);
+        this.bloomManager = BLOOM_ACTIVATED && new ComposerManager(this);
         this.render();
     }
 
@@ -86,9 +65,9 @@ export default class SceneBase {
     }
 
     setLights() {
-        this.ambientLight = new AmbientLight(0x404040);
+        this.ambientLight = new AmbientLight( 0x404040 );
         this.scene.add(this.ambientLight);
-        this.light = new HemisphereLight( 0xffffbb, 0x080820, 2 );
+        this.light = new HemisphereLight(0xffffbb, 0x080820, 2);
         this.scene.add(this.light);
     }
 
@@ -120,6 +99,8 @@ export default class SceneBase {
         this.camera.aspect = this.width / this.height;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(this.width, this.height);
+        this.bloomManager.bloomComposer.setSize(this.width, this.height);
+        this.bloomManager.finalComposer.setSize(this.width, this.height);
     }
 
     update() {
@@ -129,8 +110,11 @@ export default class SceneBase {
     render() {
         requestAnimationFrame(this.render.bind(this));
         // if (this.controls) this.controls.update();
-        this.renderer.render(this.scene, this.camera);
-        this.composer.render();
+        if(BLOOM_ACTIVATED){
+            this.bloomManager.render();
+        }else{
+            this.renderer.render(this.scene, this.camera);
+        }
         this.update();
     }
 }

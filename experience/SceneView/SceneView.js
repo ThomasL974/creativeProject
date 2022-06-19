@@ -17,41 +17,42 @@ export default class SceneView extends SceneBase {
         super.init();
 
         // HELPERS
-        // this.setControls();
-        this.setHelpers();
+        this.setControls();
+        // this.setHelpers();
         this.setup();
     }
 
     setup() {
-        const terrainGeometry = new PlaneGeometry(1000, 1000, 500 - 1, 500 - 1);
-        terrainGeometry.rotateX(- Math.PI / 2);
+        // const terrainGeometry = new PlaneGeometry(1000, 1000, 500 - 1, 500 - 1);
+        // terrainGeometry.rotateX(- Math.PI / 2);
 
-        const vertices = terrainGeometry.attributes.position.array;
-        const data = this.generateHeight(500, 500);
-        for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
+        // const vertices = terrainGeometry.attributes.position.array;
+        // const data = this.generateHeight(500, 500);
+        // for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
 
-            vertices[j + 1] = data[i] / 10;
+        //     vertices[j + 1] = data[i] / 10;
 
-        }
-        const texture = new TextureLoader().load('/assets/images/textures/road.jpg');
-        texture.wrapS = RepeatWrapping;
-        texture.wrapT = RepeatWrapping;
-        texture.repeat.set(250, 250)
-        const terrain = new Mesh(terrainGeometry, new MeshBasicMaterial({ color: texture }));
-        terrain.position.set(0, 0, 0)
+        // }
+        // const texture = new TextureLoader().load('/assets/images/textures/road.jpg');
+        // texture.wrapS = RepeatWrapping;
+        // texture.wrapT = RepeatWrapping;
+        // texture.repeat.set(250, 250)
+        // const terrain = new Mesh(terrainGeometry, new MeshBasicMaterial({ color: texture }));
+        // terrain.position.set(0, 0, 0)
         // this.scene.add(terrain);
 
-        console.log(this.initBuilding());
+        this.initBuilding();
         this.initNeonBuilding();
+        if(this.bloomManager){
+            this.bloomManager.setUp(this.buildingNeon)
+        }
 
         this.ship = new Ship(this.scene);
         this.cloud = new Cloud(this.scene);
 
-        console.log(this.cloud);
+        // console.log(this.cloud);
 
         this.scene.fog = new Fog(0x000000, 200, 800) //0.005
-
-        this.intersect = new IntersectManager(this);
 
         this.cameraManager = new CameraManager(this);
         this.isReady = true;
@@ -82,7 +83,7 @@ export default class SceneView extends SceneBase {
                 neon: true
             }
             this.buildingNeon.push(new Building(this.buildingObj));
-            
+
         }
     }
 
@@ -111,18 +112,15 @@ export default class SceneView extends SceneBase {
     }
 
     update() {
-        if (this.ship) {
-            this.ship.update()
-        }
 
-        if (this.cloud) {
-            this.cloud.update()
-        }
+        this.ship && this.ship.update();
 
-        if (this.intersect) {
-            this.intersect.update(this.buildingNeon)
-        }
+        this.cloud && this.cloud.update();
 
-        this.cameraManager && this.cameraManager.update()
+        this.intersect && this.intersect.update(this.buildingNeon);
+
+        this.cameraManager && this.cameraManager.update();
+
+        this.bloomManager && this.bloomManager.update(this.buildingNeon);
     }
 }

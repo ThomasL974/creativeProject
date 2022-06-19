@@ -1,14 +1,14 @@
-class Pointer{
-    constructor(){
+class Pointer {
+    constructor() {
         this._x = 0;
         this._y = 0;
 
-        window.addEventListener('pointerMove', this.onMove.bind(this));
+        window.addEventListener('pointermove', this.onMove.bind(this));
     }
 
-    get ratio(){
+    get ratio() {
         return {
-            x: (this._x / window.innerWidth) * 2 - 1,
+            x: (this._x / window.innerWidth) * -2 + 1,
             y: (this._y / window.innerHeight) * -2 + 1
         }
     }

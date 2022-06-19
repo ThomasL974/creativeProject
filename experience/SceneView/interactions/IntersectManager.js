@@ -21,7 +21,7 @@ export default class IntersectManager {
     }
 
     update(buildings) {
-        console.log("HEELO")
+        // console.log("HEELO")
         const object3d = buildings.map(building => building.mesh)
         // find intersections
 

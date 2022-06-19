@@ -13,7 +13,7 @@ export class Ship {
             console.log(gltf)
             gltf.scene.scale.set(0.03, 0.03, 0.03);
 
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 4; i++) {
 
                 const newShip = gltf.scene.clone();
                 const randomX = Math.random() * 1000 - 500;

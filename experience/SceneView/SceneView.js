@@ -23,31 +23,15 @@ export default class SceneView extends SceneBase {
     }
 
     setup() {
-        // const terrainGeometry = new PlaneGeometry(1000, 1000, 500 - 1, 500 - 1);
-        // terrainGeometry.rotateX(- Math.PI / 2);
-
-        // const vertices = terrainGeometry.attributes.position.array;
-        // const data = this.generateHeight(500, 500);
-        // for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-
-        //     vertices[j + 1] = data[i] / 10;
-
-        // }
-        // const texture = new TextureLoader().load('/assets/images/textures/road.jpg');
-        // texture.wrapS = RepeatWrapping;
-        // texture.wrapT = RepeatWrapping;
-        // texture.repeat.set(250, 250)
-        // const terrain = new Mesh(terrainGeometry, new MeshBasicMaterial({ color: texture }));
-        // terrain.position.set(0, 0, 0)
-        // this.scene.add(terrain);
 
         this.initBuilding();
         this.initNeonBuilding();
+        this.ship = new Ship(this.scene);
+
         if(this.bloomManager){
-            this.bloomManager.setUp(this.buildingNeon)
+            this.bloomManager.setUp()
         }
 
-        this.ship = new Ship(this.scene);
         this.cloud = new Cloud(this.scene);
 
         // console.log(this.cloud);

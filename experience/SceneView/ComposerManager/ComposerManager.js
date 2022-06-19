@@ -24,9 +24,9 @@ export default class ComposerManager {
 
         this.params = {
             exposure: 1,
-            bloomStrength: 2,
+            bloomStrength: 10,
             bloomThreshold: 0,
-            bloomRadius: 0,
+            bloomRadius: 1,
         };
 
         this.bloomPass = new UnrealBloomPass(new Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
@@ -73,10 +73,6 @@ export default class ComposerManager {
         this.pointer.x = (event.clientX / this.sceneBase.width) * 2 - 1;
         this.pointer.y = - (event.clientY / this.sceneBase.height) * 2 + 1;
 
-        // console.log("HEELO")
-        // buildings.map(value => console.log(value));
-        // find intersections
-
         this.raycaster.setFromCamera(this.pointer, this.sceneBase.camera);
 
         const intersects = this.raycaster.intersectObjects(this.object3d, false);
@@ -84,15 +80,12 @@ export default class ComposerManager {
         if (intersects.length > 0) {
 
             if (this.INTERSECTED != intersects[0].object) {
-
-                // if (this.INTERSECTED) this.INTERSECTED.material.emissive.setHex(this.INTERSECTED.currentHex);
-
-                // this.INTERSECTED = intersects[0].object;
-                // this.INTERSECTED.currentHex = this.INTERSECTED.material.emissive.getHex();
-                // this.INTERSECTED.material.emissive.setHex(0xFF0000);
-
+                console.log(intersects[0].object)
                 this.INTERSECTED = intersects[0].object;
-                this.INTERSECTED.layers.toggle(this.BLOOM_SCENE);
+                this.INTERSECTED.children.map((value) => {
+                    value.layers.toggle(this.BLOOM_SCENE);
+                    console.log(value)
+                })
 
             }
         } else {
@@ -103,27 +96,9 @@ export default class ComposerManager {
         }
 
     }
-    // onPointerDown(event) {
-    //     console.log('intersects')
-    //     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    //     this.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
 
-    //     this.raycaster.setFromCamera(this.mouse, this.sceneBase.camera);
-    //     const intersects = this.raycaster.intersectObjects(scene.children, false);
-
-    //     if (intersects.length > 0) {
-
-    //         const object = intersects[0].object;
-    //         object.layers.toggle(this.BLOOM_SCENE);
-    //         render();
-
-    //     }
-    // }
-
-    setUp(buildings = []) {
-        buildings.map(building => console.log(building));
+    setUp() {
         this.sceneBase.scene.traverse(this.disposeMaterial.bind(this));
-        // this.sceneBase.scene.children.length = 0;
 
         this.geometry = new IcosahedronGeometry(1, 15);
     }
@@ -178,36 +153,8 @@ export default class ComposerManager {
 
     }
 
-    update(buildings = []) {
-        // console.log("HEELO")
-        // buildings.map(value => console.log(value));
-        this.object3d = buildings.map(building => building.mesh)
-        // find intersections
-
-        // this.raycaster.setFromCamera(this.pointer, this.sceneBase.camera);
-
-        // const intersects = this.raycaster.intersectObjects(object3d, false);
-
-        // if (intersects.length > 0) {
-
-            // if (this.INTERSECTED != intersects[0].object) {
-
-                // if (this.INTERSECTED) this.INTERSECTED.material.emissive.setHex(this.INTERSECTED.currentHex);
-
-                // this.INTERSECTED = intersects[0].object;
-                // this.INTERSECTED.currentHex = this.INTERSECTED.material.emissive.getHex();
-                // this.INTERSECTED.material.emissive.setHex(0xFF0000);
-
-                // this.INTERSECTED = intersects[0].object;
-                // this.INTERSECTED.layers.toggle(this.BLOOM_SCENE);
-
-        //     }
-        // } else {
-        //     if (this.INTERSECTED) this.INTERSECTED.material.emissive.setHex(this.INTERSECTED.currentHex);
-
-        //     this.INTERSECTED = null;
-
-        // }
+    update(buildings = [], ships = []) {
+        this.object3d = buildings.map(building => building.mesh);
     }
 
     render() {
